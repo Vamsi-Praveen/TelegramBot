@@ -20,10 +20,10 @@ bot.onText(/\/genURL/, (msg) => {
     bot.on('message', async (msg) => {
         let link = msg.text;
         // const regex = /(https?:\/\/[^\s]+)/;
-        const { data } = await axios.post('http://localhost:8000/url/', { "url": link })
+        const { data } = await axios.post(`${process.env.BASE_URL}/url/`, { "url": link })
         // console.log(data);
         bot.sendMessage(chatId, "Your Shorten URL:");
-        bot.sendMessage(chatId, `http://localhost:8000/url/${data.shortID}`, { parse_mode: "Markdown" })
+        bot.sendMessage(chatId, `${process.env.BASE_URL}/url/${data.shortID}`, { parse_mode: "Markdown" })
         bot.off('message');
 
 
