@@ -1,5 +1,6 @@
 import TelegramBot from "node-telegram-bot-api"
 import 'dotenv/config';
+import axios from "axios";
 
 const token = process.env.TOKEN;
 //creating the new TelegramBot Class
@@ -15,9 +16,17 @@ bot.onText(/\/start/, (msg) => {
 bot.onText(/\/genURL/, (msg) => {
     const chatId = msg.chat.id;
     bot.sendMessage(chatId, "You are requsted to generate the short url");
-    bot.on('message',(msg)=>{
-        let link=msg.text;
-        bot.sendMessage(chatId,"You send "+link)
+    bot.sendMessage(chatId, "Enter URL")
+    bot.on('message', async (msg) => {
+        let link = msg.text;
+        // const regex = /(https?:\/\/[^\s]+)/;
+        const { data } = await axios.post('http://localhost:8000/url/', { "url": link })
+        // console.log(data);
+        bot.sendMessage(chatId, "Your Shorten URL:");
+        bot.sendMessage(chatId, `http://localhost:8000/url/${data.shortID}`, { parse_mode: "Markdown" })
+        bot.off('message');
+
+
     })
 })
 //sending a message to the user when they enter any text in the telegram
