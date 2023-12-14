@@ -22,8 +22,12 @@ bot.onText(/\/genURL/, (msg) => {
         // const regex = /(https?:\/\/[^\s]+)/;
         const { data } = await axios.post(`${process.env.BASE_URL}/url/`, { "url": link })
         // console.log(data);
-        bot.sendMessage(chatId, "Your Shorten URL:");
-        bot.sendMessage(chatId, `${process.env.BASE_URL}/url/${data.shortID}`, { parse_mode: "Markdown" })
+        if(data.shortID)
+        {
+            bot.sendMessage(chatId, "Your Shorten URL:");
+            bot.sendMessage(chatId, `${process.env.BASE_URL}/url/${data.shortID}`, { parse_mode: "Markdown" })
+        }
+        bot.sendMessage(chatId,"Invalid URL")
         bot.off('message');
 
 
